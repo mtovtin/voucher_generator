@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>
+        jsPDF - Create PDFs with HTML5 JavaScript Library
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
+    </script>
+</head>
+<style>
+    td {
+        word-wrap: break-word;
+    }
+    input {
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-bottom: 30px;
+    }
+
+button {
+  background-color: #222;
+  border-radius: 4px;
+  border-style: none;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Farfetch Basis","Helvetica Neue",Arial,sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  margin: 0;
+  max-width: none;
+  min-height: 44px;
+  min-width: 10px;
+
+ 
+  width: 140px;
+  height: 40px;
+}
+
+button:hover,
+button:focus {
+  opacity: .75;
+}
+*{
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+#divID{
+
+}
+</style>
+
+<body style="background-color: rgb(255, 255, 255);">
+    <div style="text-align: center;">
+    <h2 style="color:rgb(77, 128, 160); margin-bottom: 30px;">Voucher Generator</h2>
+
+    <div>
+
+     <span>number of guests: </span>   <input type="text" id="member" name="member" value="">
+        <button style=" margin-bottom: 30px;" id="filldetails" onclick="addFields()">OK</button>
+        <div id="container"></div>
+        <button style="margin-bottom: 30px;" id="filldetails" onclick="addTable()">Add Guests</button>
+    </div>
+    <div style="display: flex; justify-content: center; align-items:center; flex-direction:column; ">
+  <div>voucher number: <div style="margin-top: 10px;"> <input type="text" id="number" placeholder="number"></div></div> 
+  <div>destination:  <div style="margin-top: 10px;"><input type="text" id="to" placeholder="destination"></div> </div> 
+  <div>hotel name, rate, address: <div style="margin-top: 10px;"><input type="text" id="hotel" placeholder="hotel"></div> </div> 
+  <div>room info: <div style="margin-top: 10px;"><input type="text" id="room" placeholder="room info"></div> </div> 
+  <div>date of service: <div style="margin-top: 10px;"><input type="text" id="date" placeholder="date of service"></div></div> 
+</div>
+<div>   <button style="margin-bottom: 30px; margin-right: 10px;" value="OK" type="button" id="somebutton" onclick="addText()">OK</button><button onclick="clearF()">Reset</button></div> 
+    <div class="container">
+
+       <button onclick="convertHTMLtoPDF()">Get Voucher</button>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center; margin-top: 30px;">
+        <div id="divID"
+            style="font-size: 4px;font-family: Arial, Helvetica, sans-serif; width: 200px; margin-left: -3px; margin-bottom: 50px; ">
+            <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                <div>
+                    <img style="width: 60px; height: 35px;" src="./IMG_8698.PNG">
+                    <div>
+                        <div style="padding-bottom: 0.5px; font-weight: bold;">Travel company Magellan</div>
+                        <div style="padding-bottom: 0.5px;">Ukraine, Uzhhorod, 88017</div>
+                        <div style="padding-bottom: 0.5px;">Ivana Franka 1v, office 1</div>
+                        <div style="padding-bottom: 0.5px;">+ 380 (95) 833 82 28</div>
+                        <div style="padding-bottom: 0.5px;">+ 380 (73) 045 06 50</div>
+                        <div style="padding-bottom: 0.5px;">Magellanuz@gmail.com</div>
+                        <div style="padding-bottom: 0.5px;">Magellan.com.ua</div>
+                    </div>
+                </div>
+                <div style="width: 70px; font-weight: bold;">
+                    <div><span>Voucher No.: </span><span id="text1"></span></div>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; margin-bottom: 20px;">
+                <div><span style="font-weight: bold;">TO : </span><span id="text2"></span></div>
+                <div><span style="font-weight: bold;">ACCOMODATION INFO : </span><span id="text3"></span></div>
+                <div><span style="font-weight: bold;">ROOM INFO : </span><span id="text4"></span></div>
+                <div><span style="font-weight: bold;">DATE OF SERVICE : </span><span id="text5"></span></div>
+            </div>
+            <div
+                style="text-align: center; display: flex; justify-content: center; text-align: center; align-items: center; ">
+                <table class="styled-table"
+                    style=" margin-left: -15px; text-align: center;  table-layout: fixed; width: 120px;">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Name of the Client</th>
+                            <th>Passport Number</th>
+                            <th>Date of Birth</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablo">
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="container2"></div>
+
+
+    </div> <!-- /container -->
+
+    <script type="text/javascript">
+        var numberz=0;
+        function convertHTMLtoPDF() {
+            var pdfjs = document.getElementById('divID');
+           
+            const {
+                jsPDF
+            } = window.jspdf;
+
+            var doc = new jsPDF('p', 'mm', [297, 210]);
+            const options = {
+                pagesplit: true
+            }
+           
+            margins = {
+                top: 0,
+                bottom: 5,
+
+            };
+            doc.html(pdfjs, {
+                callback: function (doc) {
+                    doc.save("voucher.pdf");
+                },
+                x: 12,
+                y: margins.bottom
+            }, margins);
+
+        }
+
+        function clearF() {
+            $(':input').val(''); 
+        }
+
+        function addFields() {
+            // Generate a dynamic number of inputs
+            var number = document.getElementById("member").value;
+            // Get the element where the inputs will be added to
+            var container = document.getElementById("container");
+            // Remove every children it had before
+            while (container.hasChildNodes()) {
+                container.removeChild(container.lastChild);
+            }
+            for (i = 1; i <= number; i++) {
+      
+                // Append a node with a random text
+                var diw= document.createElement("div");
+                diw.appendChild(document.createTextNode(`client ${i} name: `));
+
+                // Create an <input> element, set its type and name attributes
+                var input = document.createElement("input");
+                
+                input.type = "text";
+                input.name = "member" + i;
+                input.id = 'client' + i;
+                var input1 = document.createElement("input");
+                input1.type = "text";
+                input1.name = "passport" + i;
+                input1.id = 'passport' + i;
+                var input2 = document.createElement("input");
+                input2.type = "text";
+                input2.name = "birth date" + i;
+                input2.id = 'birth' + i;
+                diw.style.marginBottom='30px'
+                diw.appendChild(input);
+                diw.appendChild(document.createTextNode(`client ${i} passport: `));
+                diw.appendChild(input1);
+                diw.appendChild(document.createTextNode(`client ${i} birthday: `));
+                diw.appendChild(input2);
+                // Append a line break 
+                container.appendChild(diw);
+            }
+        }
+
+        function addTable() {
+            var container = document.getElementById("tablo");
+            // Generate a dynamic number of inputs
+            var number = document.getElementById("member").value;
+            // Get the element where the inputs will be added to
+            // Remove every children it had before
+            // while (container.hasChildNodes()) {
+            //     container.removeChild(container.lastChild);
+            // }
+            for (i = 1; i <= number; i++) {
+                let k=numberz;
+                var tr = document.createElement("tr");
+
+                var td1 = document.createElement("td");
+
+                var td2 = document.createElement("td");
+
+                var td3 = document.createElement("td");
+
+                var td4 = document.createElement("td");
+
+                // Append a node with a random text
+                k+=i;
+                td1.innerText = k;
+                td2.innerText = document.getElementById('client' + (i)).value;
+                td3.innerText = document.getElementById('passport' + (i)).value;
+                td4.innerText = document.getElementById('birth' + (i)).value;
+
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                tr.appendChild(td4);
+                console.log(tr);
+                container.appendChild(tr);
+                // container.innerHTML = document.getElementById('number').value;
+
+            }
+            numberz+=number*1;
+            var container = document.getElementById("container");
+            // Remove every children it had before
+            while (container.hasChildNodes()) {
+                container.removeChild(container.lastChild);
+            }
+        }
+
+        function addText() {
+            document.getElementById('text1').innerHTML = document.getElementById('number').value;
+            document.getElementById('text2').innerHTML = document.getElementById('to').value;
+            document.getElementById('text3').innerHTML = document.getElementById('hotel').value;
+            document.getElementById('text4').innerHTML = document.getElementById('room').value;
+            document.getElementById('text5').innerHTML = document.getElementById('date').value;
+            var pdfjs = document.getElementById('divID')
+            pdfjs.style.visibility='visible';
+        }
+    </script>
+</body>
+
+</html>
