@@ -214,7 +214,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div id='myID' style="display: flex; flex-direction: column; justify-content: right; align-items: end;text-align: right; margin-right:10px;  white-space:nowrap; ">
+                <div id='myID' style="display: flex; flex-direction: column; justify-content: right; align-items: end;text-align: right; margin-right:10px; margin-top:'10px';  white-space:nowrap; ">
                     <img style="width: 60px; height: 35px;" src="./sign.png">
 
                 </div>
@@ -372,16 +372,18 @@
             pdfjs.style.visibility = 'visible';
         }
 
-        var margin = 10; 
+        var margin = 0; 
         function addMargin() {
-
+            console.log(margin)
 margin+=10;
+console.log(margin)
     document.getElementById("myID").style.marginTop = margin + "px";
 }
 
 function removeMargin() {
-
+console.log(margin)
     margin-=10;
+    console.log(margin)
         document.getElementById("myID").style.marginTop = margin + "px";
     }
         
